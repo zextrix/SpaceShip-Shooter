@@ -1,0 +1,10 @@
+Transform
+0.0 0.0 2.0 2.0
+Sprite
+BOMB.png
+Square
+Body
+0.25
+AABB 
+50.0 50.0 50.0 50.0
+Bomb

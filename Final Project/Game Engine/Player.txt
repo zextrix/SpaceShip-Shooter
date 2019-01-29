@@ -1,0 +1,9 @@
+Transform
+100.0 100.0
+Sprite
+batman.bmp
+Controller
+Body
+6.0
+AABB 
+100.0 100.0 100.0 100.0

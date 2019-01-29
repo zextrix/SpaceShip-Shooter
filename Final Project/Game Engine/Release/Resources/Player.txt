@@ -1,0 +1,11 @@
+Transform
+0.0 0.0 1.0 1.0
+Sprite
+spaceship.png
+Square
+Controller
+Body
+5.0
+AABB 
+50.0 50.0 50.0 50.0
+Player

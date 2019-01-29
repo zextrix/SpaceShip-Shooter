@@ -1,0 +1,8 @@
+Transform
+400.0 200.0 1.0 1.0
+Sprite
+batman.bmp
+Body
+3.0
+AABB 
+30.0 30.0 100.0 100.0

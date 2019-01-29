@@ -1,0 +1,214 @@
+/*------------------------------------------------------------------
+Copyright (C) 2018 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+
+File Name:    Main
+
+Purpose:
+Point of entry for the application
+
+Language:   C++
+
+Platform:
+
+Compiler:-  Visual Studio 2017 - Visual C++ 14.1
+
+
+Hardware Requirements:-		Display monitor, keyboard.
+
+Operating System:-		Microsoft Windows 8.1+
+
+Project:
+
+Student Login:- pratyush.gawai
+Class:- MSCS Fall2018
+Assignment :- MileStone1
+
+Author: Pratyush Gawai
+
+Student login: pratyush.gawai
+
+Student ID: 60001818
+
+Creation date:  10/18/2018
+---------------------------------------------------------*/
+#include <SDL.h>
+#include "stdio.h"
+#include <iostream>
+#include <Windows.h>
+
+#include "ResourceManager.h"
+#include "InputManager.h"
+#include "Timer.h"
+
+#include "GameObject.h"
+#include "GameObjectManager.h"
+#include "ObjectFactory.h"
+
+#include "Transform.h"
+#include "Sprite.h"
+#include "Controller.h"
+#include "Component.h"
+#define MAX_FRAME 30
+InputManager *gpIM = new InputManager();
+
+ResourceManager *gpRM = new ResourceManager();
+
+Timer *gpTime = new Timer(MAX_FRAME);
+
+GameObjectManager *gpGOM = new GameObjectManager();
+
+ObjectFactory *fpOF = new ObjectFactory();
+
+
+FILE _iob[] = { *stdin, *stdout, *stderr };
+
+extern "C" FILE * __cdecl __iob_func(void)
+{
+	return _iob;
+}
+
+#pragma comment(lib, "legacy_stdio_definitions.lib")
+
+int main(int argc, char* args[])
+{
+	SDL_Window *pWindow;
+	SDL_Surface *pImageSurface=NULL;
+	SDL_Surface *pImages[5] = {NULL,NULL,NULL,NULL,NULL};
+	SDL_Rect initpos;
+	SDL_Rect finalpos;
+	int error = 0;
+	int i,x = 0;
+
+	InputManager *mpInput = new InputManager();
+	Timer *mpTimer = new Timer(MAX_FRAME);
+	ResourceManager *rm = new ResourceManager();
+
+	if (AllocConsole())
+	{
+		FILE* file;
+		freopen_s(&file, "CONOUT$", "wt", stdout);
+		freopen_s(&file, "CONOUT$", "wt", stderr);
+		freopen_s(&file, "CONOUT$", "wt", stdin);
+
+		SetConsoleTitle(L"SDL 2.0 Test");
+	}
+	int xpos=0, ypos=0;
+	bool appIsRunning = true;
+	// Initialize SDL
+	if((error = SDL_Init( SDL_INIT_VIDEO )) < 0 )
+	{
+		printf("Couldn't initialize SDL, error %i\n", error);
+		return 1;
+	}
+	
+
+	pWindow = SDL_CreateWindow("Milestone1",		// window title
+		SDL_WINDOWPOS_UNDEFINED,					// initial x position
+		SDL_WINDOWPOS_UNDEFINED,					// initial y position
+		800,										// width, in pixels
+		600,										// height, in pixels
+		SDL_WINDOW_SHOWN);
+
+	// Check that the window was successfully made
+	if (NULL == pWindow)
+	{
+		// In the event that the window could not be made...
+		printf("Could not create window: %s\n", SDL_GetError());
+		return 1;
+	}
+	pImageSurface = SDL_GetWindowSurface(pWindow);
+
+	pImages[0] = rm->LoadSurface("./Resources/yb.bmp");
+	pImages[1] = rm->LoadSurface("./Resources/up.bmp");
+	pImages[2] = rm->LoadSurface("./Resources/down.bmp");
+	pImages[3] = rm->LoadSurface("./Resources/left.bmp");
+	pImages[4] = rm->LoadSurface("./Resources/right.bmp");
+
+	for (i=0; i < 5; i++)
+	{
+		if (!pImages[i])
+		{
+			printf("couldnt load\n");
+			return	1;
+		}
+	}
+
+	initpos = { xpos, ypos , pImages[x]->w, pImages[x]->h };
+	finalpos = initpos;
+	
+	SDL_BlitSurface(pImages[x], &initpos, pImageSurface, &finalpos);
+
+	//Update the surface
+	SDL_UpdateWindowSurface(pWindow);
+
+	// Game loop
+	while(true == appIsRunning)
+	{
+		mpTimer->StartTimer();
+		printf("FrameTime::%d\n",mpTimer->mFrameTime);
+		SDL_Event e;
+		
+		
+		while( SDL_PollEvent( &e ) != 0 )
+		{
+			//User requests quit
+			if( e.type == SDL_QUIT )
+			{
+				appIsRunning = false;
+			}
+			mpInput->Update();
+
+				if(mpInput->IsPressed(SDL_SCANCODE_UP))
+				{
+					x = 1;
+					ypos -= 1;
+					
+				}	
+				if (mpInput->IsPressed(SDL_SCANCODE_DOWN))
+				{
+					x = 2;
+					ypos += 1;
+					
+				}
+				if (mpInput->IsPressed(SDL_SCANCODE_LEFT))
+				{
+					x = 3;
+					xpos -= 1;
+					
+				}
+				if (mpInput->IsPressed(SDL_SCANCODE_RIGHT))
+				{
+					x = 4;
+					xpos += 1;
+					
+				}
+				if (mpInput->IsPressed(SDL_SCANCODE_ESCAPE))
+				{
+					appIsRunning = false;
+				}
+			
+		}
+		finalpos = { xpos,ypos,pImages[x]->w,pImages[x]->h };
+		SDL_FillRect(pImageSurface, NULL, 0);
+		SDL_BlitSurface(pImages[x], NULL, pImageSurface, &finalpos);
+		SDL_UpdateWindowSurface(pWindow);
+		mpTimer->StopTimer();
+	}
+	
+	
+	delete(rm);
+	delete(mpInput);
+	delete(mpTimer);
+
+	SDL_FreeSurface(pImageSurface);
+
+	// Close and destroy the window
+	SDL_DestroyWindow(pWindow);
+
+	// Quit SDL subsystems
+	SDL_Quit();
+	
+	return 0;
+}

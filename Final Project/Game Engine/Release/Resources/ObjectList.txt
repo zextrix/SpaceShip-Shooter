@@ -1,0 +1,17 @@
+Player.txt
+Ground.txt
+Enemy.txt
+Bullet.txt
+LeftWall.txt
+RightWall.txt
+Bomb.txt
+Time.txt
+Lives.txt
+Points.txt
+Asteroid.txt
+Speed.txt
+TriBul.txt
+Winner.txt
+Loser.txt
+Start.txt
+Shield.txt

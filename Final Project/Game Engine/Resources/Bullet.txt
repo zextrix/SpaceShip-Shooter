@@ -1,0 +1,10 @@
+Transform
+0.0 0.0 1.0 1.0
+Sprite
+bullet.png
+Square
+Body
+0.25
+AABB 
+5.0 5.0 5.0 5.0
+Bullet

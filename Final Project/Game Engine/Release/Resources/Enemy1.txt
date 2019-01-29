@@ -1,0 +1,8 @@
+Transform
+300.0 300.0
+Sprite
+flash.bmp
+Body
+2.0
+AABB 
+20.0 20.0 100.0 100.0

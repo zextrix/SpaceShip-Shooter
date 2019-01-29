@@ -1,0 +1,5 @@
+Transform
+720.0 550.0 20.0 20.0
+Sprite
+1.png
+Square

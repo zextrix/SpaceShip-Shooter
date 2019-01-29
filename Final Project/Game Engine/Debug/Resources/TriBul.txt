@@ -1,0 +1,11 @@
+Transform
+0.0 0.0 1.0 1.0
+Sprite
+pow1.png
+Square
+Body
+2.0
+AABB 
+50.0 50.0 50.0 50.0
+Tri
+
